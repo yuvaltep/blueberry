@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Devices.Bluetooth;
@@ -158,13 +159,15 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
             if (device == null)
                 return;
             string[] namestr= device.Name.Replace("-", "").Split(' ');
-            var BCName = namestr[0];
+            var serial = namestr[0];
             string[] macstr = device.DeviceId.Replace(":", "").Split('-');
             var mac = macstr[1];
-            Console.WriteLine("BCone Name: " + BCName + ",rssi: " + device.SignalStrengthInDB + ",mac: " + mac);
+            var rssi = device.SignalStrengthInDB;
+            var time = device.BroadcastTime.ToUniversalTime();
+                
             if (!device.Name.StartsWith("BC"))
                 return;
-            if (device.SignalStrengthInDB < -40)
+            if (rssi < -40)
                 return;
             
             // Is new discovery?
@@ -197,6 +200,21 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
                     // Don't bother adding to the list and do nothing
                     return;
 
+                if (newDiscovery)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Serial: " + serial + ",mac: " + mac + ",rssi: " + rssi + ",time:" + time + "-> write to file!" );
+                    //file per device for label printing
+                    using (var writetext = new StreamWriter("G:\\My Drive\\Production\\BCone\\Serials\\LabelAutomation\\" + serial + "_" + mac + ".txt"))
+                    {
+                        writetext.WriteLine(serial + "," + mac);
+                    }
+                    //append serial file for logging
+                    using (var writetext = new StreamWriter("G:\\My Drive\\Production\\BCone\\Serials\\SerialLog.txt",true))
+                    {
+                        writetext.WriteLine(serial + "," + mac + "," + time);
+                    }
+                }
                 // Add/update the device in the dictionary
                 mDiscoveredDevices[device.DeviceId] = device;
             }

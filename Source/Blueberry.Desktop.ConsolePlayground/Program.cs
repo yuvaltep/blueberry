@@ -9,6 +9,7 @@ namespace Blueberry.Desktop.ConsolePlayground
     {
         static void Main()
         {
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("BCone BLE Automation");
 
             var tcs = new TaskCompletionSource<bool>();
@@ -48,7 +49,7 @@ namespace Blueberry.Desktop.ConsolePlayground
                     watcher.DeviceTimeout += (device) =>
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"Device timeout: {device}");
+                        //Console.WriteLine($"Device timeout: {device}");
                     };
 
                     // Start listening
