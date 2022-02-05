@@ -157,7 +157,11 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
             // Filter Advertisements            
             if (device == null)
                 return;
-            Console.WriteLine("Name: " + device.Name + ",rssi: " + device.SignalStrengthInDB + ",mac: " + device.Address);
+            string[] namestr= device.Name.Replace("-", "").Split(' ');
+            var BCName = namestr[0];
+            string[] macstr = device.DeviceId.Replace(":", "").Split('-');
+            var mac = macstr[1];
+            Console.WriteLine("BCone Name: " + BCName + ",rssi: " + device.SignalStrengthInDB + ",mac: " + mac);
             if (!device.Name.StartsWith("BC"))
                 return;
             if (device.SignalStrengthInDB < -40)

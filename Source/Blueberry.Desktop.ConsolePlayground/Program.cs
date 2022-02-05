@@ -36,7 +36,7 @@ namespace Blueberry.Desktop.ConsolePlayground
                     watcher.NewDeviceDiscovered += (device) =>
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"New device: {device}");
+                        //Console.WriteLine($"New device: {device}");
                     };
 
                     watcher.DeviceNameChanged += (device) =>
