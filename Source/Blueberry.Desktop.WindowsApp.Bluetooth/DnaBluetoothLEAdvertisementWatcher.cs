@@ -154,10 +154,15 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
                 args.Timestamp, 
                 args.RawSignalStrengthInDBm);
 
-            // Null guard
+            // Filter Advertisements            
             if (device == null)
                 return;
-
+            Console.WriteLine("Name: " + device.Name + ",rssi: " + device.SignalStrengthInDB + ",mac: " + device.Address);
+            if (!device.Name.StartsWith("BC"))
+                return;
+            if (device.SignalStrengthInDB < -40)
+                return;
+            
             // Is new discovery?
             var newDiscovery = false;
             var existingName = default(string);

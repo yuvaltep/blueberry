@@ -9,7 +9,7 @@ namespace Blueberry.Desktop.ConsolePlayground
     {
         static void Main()
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("BCone BLE Automation");
 
             var tcs = new TaskCompletionSource<bool>();
 
