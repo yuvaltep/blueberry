@@ -70,7 +70,7 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
         /// The timeout in seconds that a device is removed from the <see cref="DiscoveredDevices"/>
         /// list if it is not re-advertised within this time
         /// </summary>
-        public int HeartbeatTimeout { get; set; } = 30;
+        public int HeartbeatTimeout { get; set; } = 120;
 
         #endregion
 
@@ -200,12 +200,15 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
                     // Don't bother adding to the list and do nothing
                     return;
 
+                // Add/update the device in the dictionary
+                mDiscoveredDevices[device.DeviceId] = device;
+
                 if (newDiscovery)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Serial: " + serial + ",mac: " + mac + ",rssi: " + rssi + ",time:" + time + "-> write to file!" );
                     //file per device for label printing
-                    using (var writetext = new StreamWriter("G:\\My Drive\\Production\\BCone\\Serials\\LabelAutomation\\" + serial + "_" + mac + ".txt"))
+                    using (var writetext = new StreamWriter("C:\\LabelAutomation\\Scan Folder\\" + serial + "_" + mac + ".txt"))
                     {
                         writetext.WriteLine(serial + "," + mac);
                     }
@@ -215,8 +218,6 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
                         writetext.WriteLine(serial + "," + mac + "," + time);
                     }
                 }
-                // Add/update the device in the dictionary
-                mDiscoveredDevices[device.DeviceId] = device;
             }
 
             // Inform listeners
