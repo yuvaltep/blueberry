@@ -1,0 +1,71 @@
+﻿<IntegrationFile Version="6" ID="2d24cf82-c385-4f71-97cf-dbccf7501ecd">
+  <ActionGroup Name="IntegrationFileActionGroup" ID="9a3a875b-76e9-4a2d-ac80-35c726a96cac" RunMethod="Sequential" MessagingEnabled="false">
+    <Actions>
+      <FileTriggerIntegration Name="File Integration" ID="41fa06c3-e33b-4252-809d-2b092c8ec5b8" IgnoreErrors="true" TriggerEventProcessingWaitMode="WaitForPreviousEventPrintJob" Filter="*.txt" DetectionExtension="pass" IncludeSubFolders="true">
+        <ActionGroup ID="90057b36-2b08-4a3a-a0b8-ebe98d620508" RunMethod="Sequential" MessagingEnabled="false">
+          <Actions>
+            <SelectCaseAction Name="Select Case (%FileFolder%)" ID="0927b95f-348a-47c6-8af0-aa474bd9b5ae" RunMethod="Sequential" MessagingEnabled="false">
+              <Actions>
+                <CaseAction Name="Select Case (%FileFolder%)/Case C:\LabelAutomation\Scan Folder\HU\:" ID="59334780-5504-4e06-9b57-9dd1abdac108" RunMethod="Sequential" MessagingEnabled="false">
+                  <Actions>
+                    <PrintAction Name="Print Document" ID="e49545c4-0a96-47bf-bbc9-6e6f4cac198b" IgnoreErrors="false" Document="C:\LabelAutomation\BartenderConfig\BC HU+PKG label V02-Automation.btw" Printer="ZDesigner ZD420-300dpi ZPL" CopiesPerSerialNumber="2" RecordRange="1..." WaitForPrintJobToComplete="true" PrintJobTimeout="60000" PrintResponseVariable="" PrintToFileFileName="%IntegrationName%.pdf" PrintToFileFolder="%IntegrationFileFolder%" NamedDataSourcePrefix="BTDS_">
+                      <RecordSets Type="VariableName" DataSourceVariableName="EventData" />
+                    </PrintAction>
+                  </Actions>
+                  <CaseActionConditionEquals Value="C:\LabelAutomation\Scan Folder\HU\" />
+                </CaseAction>
+                <CaseAction Name="Select Case (%FileFolder%)/Case C:\LabelAutomation\Scan Folder\PU\:" ID="373f6530-95ca-4472-b685-c95e3e5c1568" RunMethod="Sequential" MessagingEnabled="false">
+                  <Actions>
+                    <PrintAction Name="Print Document 2" ID="4b552b2d-7bf0-4d9f-b465-9e8151487577" IgnoreErrors="false" Document="C:\LabelAutomation\BartenderConfig\BC PU label V02-Automation.btw" Printer="ZDesigner ZD420-300dpi ZPL" CopiesPerSerialNumber="2" RecordRange="1..." WaitForPrintJobToComplete="true" PrintJobTimeout="60000" PrintResponseVariable="" PrintToFileFileName="%IntegrationName%.pdf" PrintToFileFolder="%IntegrationFileFolder%" NamedDataSourcePrefix="BTDS_">
+                      <RecordSets Type="VariableName" />
+                    </PrintAction>
+                  </Actions>
+                  <CaseActionConditionEquals Value="C:\LabelAutomation\Scan Folder\PU\" />
+                </CaseAction>
+              </Actions>
+              <ConditionVariableName>FileFolder</ConditionVariableName>
+            </SelectCaseAction>
+          </Actions>
+        </ActionGroup>
+        <ScanFolder Path="C:\LabelAutomation\Scan Folder" />
+        <MoveToFolder Path="C:\LabelAutomation\pass" />
+        <FailureMoveToFolder Path="C:\LabelAutomation\failed" />
+      </FileTriggerIntegration>
+    </Actions>
+  </ActionGroup>
+  <Metadata>
+    <Properties>
+      <Properties Name="MostRecentlyUsedVariables" Type="System.String">
+        <Value>FileFolder;EventData;DetectedFileFolder;PrintToFileName</Value>
+      </Properties>
+      <Properties Name="SelectedDeploymentConfiguration" Type="System.String">
+        <Value>Production</Value>
+      </Properties>
+      <Properties Name="SelectedIntegration" Type="System.Int32">
+        <Value>0</Value>
+      </Properties>
+      <Properties Name="SelectedOptionsPage" Type="System.String">
+        <Value>0;0</Value>
+      </Properties>
+    </Properties>
+  </Metadata>
+  <SourcePath>C:\LabelAutomation\BartenderConfig\LabelAutoIntegration.btin</SourcePath>
+  <IsPrinting>false</IsPrinting>
+  <IsPrintPreview>false</IsPrintPreview>
+  <DeploymentConfigurations>
+    <DeploymentConfiguration CancelIfIntegrationFileExistsOnTargetServer="false">
+      <Name>Test</Name>
+      <TargetServers>
+        <TargetServer Name="This Computer" Description="" IsServerGroup="false" />
+      </TargetServers>
+      <DeploymentSchedule Method="Immediately" />
+    </DeploymentConfiguration>
+    <DeploymentConfiguration CancelIfIntegrationFileExistsOnTargetServer="false">
+      <Name>Production</Name>
+      <TargetServers>
+        <TargetServer Name="This Computer" Description="" IsServerGroup="false" />
+      </TargetServers>
+      <DeploymentSchedule Method="Immediately" />
+    </DeploymentConfiguration>
+  </DeploymentConfigurations>
+</IntegrationFile>
