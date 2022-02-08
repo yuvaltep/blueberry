@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Blueberry.Desktop.ConsolePlayground
@@ -39,24 +40,49 @@ namespace Blueberry.Desktop.ConsolePlayground
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                         //Console.WriteLine($"New device: {device}");
-                        string[] namestr = device.Name.Replace("-", "").Split(' ');
+                        string[] namestr = device.Name.Replace("-", "").Split(' ');                        
                         var serial = namestr[0];
+    
+                        var sb = new StringBuilder(namestr[1].Length);
+                        foreach (var c in namestr[1])
+                        {
+                            //replace non ascii with " "
+                            if (((int)c > 127) || ((int)c < 32))
+                            {
+                                sb.Append(" ");
+                                continue;
+                            }
+                            sb.Append(c);
+                        }
+                        var versionArr = sb.ToString().Split(' ');
+                        var version = versionArr[0];
+
                         string[] macstr = device.DeviceId.Replace(":", "").Split('-');
                         var mac = macstr[1];
                         var rssi = device.SignalStrengthInDB;
                         var time = device.BroadcastTime.ToUniversalTime();
-
+                                                
+                        //file per device for label printing
+                        var folder = "";
+                        if (serial.StartsWith("BCHU"))
+                        {
+                            folder = "C:\\LabelAutomation\\Scan Folder\\HU\\";
+                        }
+                        else if (serial.StartsWith("BCPU"))
+                        {
+                            folder = "C:\\LabelAutomation\\Scan Folder\\PU\\";
+                        }
                         Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("Serial: " + serial + ",mac: " + mac + ",rssi: " + rssi + ",time:" + time + "-> write to file!");
-                            //file per device for label printing
-                            using (var writetext = new StreamWriter("C:\\LabelAutomation\\Scan Folder\\" + serial + "_" + mac + ".txt"))
+                        Console.WriteLine("Serial: " + serial + ",mac: " + mac + ", version: " + version  + ", rssi: " + rssi + ", time:" + time + "-> write to " + folder + serial + "_" + mac + ".txt");
+
+                        using (var writetext = new StreamWriter(folder + serial + "_" + mac + ".txt"))
                             {
-                                writetext.WriteLine(serial + "," + mac);
+                                writetext.WriteLine(serial + "," + mac + "," + version + "," + rssi + "," + time);
                             }
                             //append serial file for logging
                             using (var writetext = new StreamWriter("G:\\My Drive\\Production\\BCone\\Serials\\SerialLog.txt", true))
                             {
-                                writetext.WriteLine(serial + "," + mac + "," + time);
+                                writetext.WriteLine(serial + "," + mac + "," + version + "," + rssi + "," + time);
                             }
                     };
 

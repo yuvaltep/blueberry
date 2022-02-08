@@ -149,6 +149,12 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
             // Cleanup Timeouts
             CleanupTimeouts();
 
+            if (!args.Advertisement.LocalName.StartsWith("BC"))
+                return;
+
+            if (args.RawSignalStrengthInDBm<-40)
+                return;
+
             // Get BLE device info
             var device = await GetBluetoothLEDeviceAsync(
                 args.BluetoothAddress, 
@@ -159,11 +165,6 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
             if (device == null)
                 return;
             var rssi = device.SignalStrengthInDB;
-                
-            if (!device.Name.StartsWith("BC"))
-                return;
-            if (rssi < -40)
-                return;
             
             // Is new discovery?
             var newDiscovery = false;
@@ -231,14 +232,10 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
             if (device == null)
                 return null;
 
-            if (!device.Name.StartsWith("BC"))
-                return null;
-            if (rssi < -40)
-                return null;
 
             // NOTE: This can throw a System.Exception for failures
             // Get GATT services that are available
-            var gatt = await device.GetGattServicesAsync().AsTask();
+            /* var gatt = await device.GetGattServicesAsync().AsTask();
 
             // If we have any services...
             if (gatt.Status == GattCommunicationStatus.Success)
@@ -251,7 +248,7 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
                     var gattProfileId = service.Uuid;
                 }
             }
-
+            */
             // Return the new device information
             return new DnaBluetoothLEDevice
             (
