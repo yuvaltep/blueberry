@@ -68,7 +68,7 @@ namespace Blueberry.Desktop.ConsolePlayground
                         {
                             folder = "C:\\LabelAutomation\\Scan Folder\\HU\\";
                         }
-                        else if (serial.StartsWith("BCPU"))
+                        else if ((serial.StartsWith("BCPU"))||(serial.StartsWith("BCSO")))
                         {
                             folder = "C:\\LabelAutomation\\Scan Folder\\PU\\";
                         }
