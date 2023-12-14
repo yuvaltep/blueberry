@@ -152,7 +152,7 @@ namespace Blueberry.Desktop.WindowsApp.Bluetooth
             if (!args.Advertisement.LocalName.StartsWith("BC"))
                 return;
 
-            if (args.RawSignalStrengthInDBm<-40)
+            if (args.RawSignalStrengthInDBm<-30)
                 return;
 
             // Get BLE device info
